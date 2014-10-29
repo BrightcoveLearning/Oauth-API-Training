@@ -166,13 +166,23 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
 			products = {},
 			product = null,
 			// functions
+			getSelectedValue,
+			deselectValue,
 			cleanString,
-			prepareClientCredentialsRequest,
-			prepareAccessTokenRequest,
-			prepareAPIRequest,
 			submitRequest,
+			getClientCredentials,
+			getAccessToken,
+			makeAPIRequest,
 			displayOperations,
 			init;
+		// get selected value for single select element
+		getSelectedValue = function (e) {
+		    return e.options[e.selectedIndex].value;
+		};
+		// deselect selected value for select element
+		deselectValue = function (e) {
+			e.options[e.selectedIndex].selected = false;
+		}
 		// function to remove spaces and line breaks
 		cleanString = function (str) {
 			// remove spaces
@@ -181,28 +191,28 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
 		};
 		submitRequest = function (options) {
 		    var httpRequest = new XMLHttpRequest(),
-		    	alertContents;
-		    if (!httpRequest) {
-				alert("You must have an old browser: (Cannot create an XMLHTTP instance");
-				return false;
-		    }
-		    httpRequest.onreadystatechange = alertContents;
-		    httpRequest.open('POST', url);
-		    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		    httpRequest.send('userName=' + encodeURIComponent(userName));
-		  }
+		 //    	alertContents;
+		 //    if (!httpRequest) {
+			// 	alert("You must have an old browser: (Cannot create an XMLHTTP instance");
+			// 	return false;
+		 //    }
+		 //    httpRequest.onreadystatechange = alertContents;
+		 //    httpRequest.open('POST', url);
+		 //    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		 //    httpRequest.send('userName=' + encodeURIComponent(userName));
+		 //  }
 
-			alertContents = function () {
-				if (httpRequest.readyState === 4) {
-					if (httpRequest.status === 200) {
-					var response = JSON.parse(httpRequest.responseText);
-					alert(response.computedString);
-					} else {
-					alert('There was a problem with the request.');
-					}
-				}
-			}
-			};
+			// alertContents = function () {
+			// 	if (httpRequest.readyState === 4) {
+			// 		if (httpRequest.status === 200) {
+			// 		var response = JSON.parse(httpRequest.responseText);
+			// 		alert(response.computedString);
+			// 		} else {
+			// 		alert('There was a problem with the request.');
+			// 		}
+			// 	}
+			// }
+		};
 		// function to display operations for selected API
 		displayOperations = function () {
 			console.log("display ops", JSON.stringify(product[product][api].operations, null, "  "));
@@ -216,49 +226,80 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
 			products["video-cloud-account"].apiOptions = "<option value=\"\">Select an API</option><option value=\"aapi\">Analytics API</option><option value=\"pmapi\">Player Management API</option><option value=\"diapi\">Dynamic Ingest API</option><option value=\"cmsapi\">CMS API</option><option value=\"ipapi\">Ingest Profiles API</option>";
 			products["video-cloud-account"].apis = {};
 			products["video-cloud-account"].apis.aapi = {};
+			products["video-cloud-account"].apis.aapi.token = null;
+			products["video-cloud-account"].apis.aapi.client_id = null;
+			products["video-cloud-account"].apis.aapi.client_secret = null;
+			products["video-cloud-account"].apis.aapi.timeout = 0;
 			products["video-cloud-account"].apis.aapi.operations = ["video-cloud/analytics/read"];
 			products["video-cloud-account"].apis.aapi.baseURL = "https://data.brightcove.com/analytics-api/videocloud";
 			products["video-cloud-account"].apis.aapi.requestURL = "";
+			products["video-cloud-account"].apis.pmapi = {};
+			products["video-cloud-account"].apis.pmapi.token = null;
+			products["video-cloud-account"].apis.pmapi.client_id = null;
+			products["video-cloud-account"].apis.pmapi.client_secret = null;
+			products["video-cloud-account"].apis.pmapi.timeout = 0;
 			products["video-cloud-account"].apis.pmapi.operations = ["video-cloud/player/all"];
 			products["video-cloud-account"].apis.pmapi.baseURL = "https://players.api.brightcove.com/v1";
 			products["video-cloud-account"].apis.pmapi.requestURL = "";
+			products["video-cloud-account"].apis.diapi = {};
+			products["video-cloud-account"].apis.diapi.token = null;
+			products["video-cloud-account"].apis.diapi.client_id = null;
+			products["video-cloud-account"].apis.diapi.client_secret = null;
+			products["video-cloud-account"].apis.diapi.timeout = 0;
 			products["video-cloud-account"].apis.diapi.operations = ["video-cloud/video/all","video-cloud/ingest-profiles/profile/read","video-cloud/ingest-profiles/account/read"];
 			products["video-cloud-account"].apis.diapi.baseURL = "https://ingest.api.brightcove.com/v1";
 			products["video-cloud-account"].apis.diapi.requestURL = "";
+			products["video-cloud-account"].apis.cmsapi = {};
+			products["video-cloud-account"].apis.cmsapi.token = null;
+			products["video-cloud-account"].apis.cmsapi.client_id = null;
+			products["video-cloud-account"].apis.cmsapi.client_secret = null;
+			products["video-cloud-account"].apis.cmsapi.timeout = 0;
 			products["video-cloud-account"].apis.cmsapi.operations = ["video-cloud/video/all"];
 			products["video-cloud-account"].apis.cmsapi.baseURL = "https://cms.api.brightcove.com/v1beta1";
 			products["video-cloud-account"].apis.cmsapi.requestURL = "";
+			products["video-cloud-account"].apis.ipapi = {};
+			products["video-cloud-account"].apis.ipapi.token = null;
+			products["video-cloud-account"].apis.ipapi.client_id = null;
+			products["video-cloud-account"].apis.ipapi.client_secret = null;
+			products["video-cloud-account"].apis.ipapi.timeout = 0;
 			products["video-cloud-account"].apis.ipapi.operations = ["video-cloud/ingest-profiles/profile/all"];
 			products["video-cloud-account"].apis.ipapi.baseURL = "http://ingestion.api.brightcove.com/v1";
 			products["video-cloud-account"].apis.ipapi.requestURL = "";
 			products["perform-account"] = {};
 			products["perform-account"].apiOptions = "<option value=\"pmapi\">Player Management API</option>";
+			products["perform-account"].apis = {};
+			products["perform-account"].apis.pmapi = {};
+			products["perform-account"].apis.pmapi.token = null;
+			products["perform-account"].apis.pmapi.client_id = null;
+			products["perform-account"].apis.pmapi.client_secret = null;
+			products["perform-account"].apis.pmapi.timeout = 0;
 			products["perform-account"].apis.pmapi.operations = ["video-cloud/player/all"]; = ["perform/player/all"];
 			products["perform-account"].apis.pmapi.baseURL = "https://players.api.brightcove.com/v1";
 			products["perform-account"].apis.pmapi.requestURL = "";
 			// set up event handlebars
-			$submit.on("click", submitRequest);
+			submit_button.addEventListener("click", submitRequest);
 			api_field.on("change", function () {
 				console.log("api change");
 				var str;
 				if (product === null) {
 					window.alert("You must select a product before you can select an API");
-					api_field.val("");
+					deselectValue(api_field);
 				} else {
-					api = api_field.val();
+					api = api_field.value;
 					displayOperations();
 				}
 			});
-			product_field.on("change", function () {
+			product_field.addEventListener("change", function () {
 				operationsBlock.innerHTML = "";
-				product = product_field.val();
-				api_field.html(productOptions[product]);
+				product = getSelectedValue(product_field);
+				api_field.innerHTML = products[product].apiOptions;
 				if (product === "perform-account") {
 					api = "pmapi";
 					displayOperations("pmapi");
 				}
 			});
 		};
+		// initialize - set up data
 		init();
 
 	})(window, document);
