@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Get API Client Credentials</title>
+	<style>
+	body {
+		font-family: Helvetica, Arial, sans-serif;
+		margin: 50px;
+	}
+	fieldset {
+		border: 1px solid #366;
+		border-radius: 4px;
+		margin-bottom: 20px;
+	}
+	legend {
+		color: #366;
+	}
+	textarea {
+		width: 95%;
+		height: 3rem;
+		font-size: 1rem;
+	}
+	input, pre, code, textarea {
+		font-size: 1rem;
+		background-color: #F5F5F5;
+	}
+	</style>
+</head>
+
+<body>
+	<h1>API Tester</h1>
+    <fieldset>
+        <legend>Inputs</legend>
+        <p>
+			Account ID:
+			<input size="60" id="account_id" type="text" value="">
+		</p>
+        <p>
+			Client ID:
+			<input size="60" id="client_id" type="text" value="">
+		</p>
+        <p>
+			Client Secret:
+			<input size="120" id="client_secret" type="text" value="">
+		</p>
+    </fieldset>
+    <fieldset>
+    	<legend>Outputs</legend>
+		<p>
+			API request:
+			<textarea id="apiRequest"></textarea>
+		</p>
+        <p>
+            <input id="submit" type="submit" value="Submit Request">
+        </p>
+        <pre><code id="response"></code></pre>
+    </fieldset>
+	<script>
+	var BCLS = ( function (window, document) {
+		var account_id_field = document.getElementById("account_id"),
+			account_id,
+			client_id_field = document.getElementById("client_id"),
+			client_id = null,
+			client_secret_field = document.getElementById("client_secret"),
+			client_secret = null,
+			auth_string = null,
+			access_token = null,
+			access_token_field = document.getElementById("access_token"),
+			expires_in = 0,
+			apiRequest = null,
+            apiRequest_field = document.getElementById("apiRequest"),
+			submit_button = document.getElementById("submit"),
+			response = document.getElementById("response"),
+			// functions
+			cleanString,
+			submitRequest,
+			getAccessToken,
+			init;
+		// function to remove spaces and line breaks
+		cleanString = function (str) {
+			// remove spaces
+			str = str.replace(/\s/g, "");
+			return str;
+		};
+		// function to make API request
+		submitRequest = function () {
+		    // code to submit the request
+		};
+		// init function to set up event listeners
+		init = function () {
+			// event listeners
+			submit_button.addEventListener("click", submitRequest);
+			account_id_field.addEventListener("change", function () {
+				// trim any leading/trailing spaces from the input strings
+				account_id = cleanString(account_id_field.value);
+				apiRequest = "https://cms.api.brightcove.com/v1beta1/accounts/" + account_id + "/videos";
+				// display the request URL
+				apiRequest_field.innerHTML = apiRequest;
+			});
+			client_id_field.addEventListener("change", function () {
+				client_id = cleanString(client_id_field.value);
+			});
+			client_secret_field.addEventListener("change", function () {
+				client_secret = cleanString(client_secret_field.value);
+			});
+		};
+		// initialize - set up data
+		init();
+
+	})(window, document);
+	</script>
+</body>
+
+</html>

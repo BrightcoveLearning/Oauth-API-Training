@@ -3,130 +3,60 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" />
-	<!-- change title to match the h1 heading -->
 	<title>Get API Client Credentials</title>
-	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/css/foundation.min.css" />
-	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/css/normalize.css" />
-	<script src="//use.edgefonts.net/source-code-pro.js"></script>
-	<link href="//files.brightcove.com/proxima-nova/font-faces.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="//docs.brightcove.com/en/styles/bcls-doc-site.css">
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/styles/github.min.css">
 	<style>
-	table {
-		width: 100%;
+	body {
+		font-family: Helvetica, Arial, sans-serif;
+		margin: 50px;
+	}
+	fieldset {
+		border: 1px solid #366;
+		border-radius: 4px;
+		margin-bottom: 20px;
+	}
+	legend {
+		color: #366;
 	}
 	textarea {
 		width: 95%;
-		height: 4rem;
+		height: 3rem;
+		font-size: 1rem;
+	}
+	input, pre, code, textarea {
+		font-size: 1rem;
+		background-color: #F5F5F5;
 	}
 	</style>
-	<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2728311-29', 'auto');
-  ga('send', 'pageview');
-
-</script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/js/vendor/modernizr.js"></script>
 </head>
 
 <body>
-	<!-- header navbar -->
-	<div id="navWrapper" class="fixed"></div>
-	<!-- breadcrumbs -->
-	<nav id="breadCrumbWrapper" class="breadcrumbs show-for-medium-up"></nav>
-	<!-- search -->
-	<div id="searchModal" class="reveal-modal" data-reveal></div>
-	<!-- content -->
-	<!-- content -->
-	<div class="row">
-		<div class="large-2 columns show-for-large-up">
-			<div id="sidenav"></div>
-		</div>
-		<div id="main" class="large-10 small-12 columns">
-			<div id="top" class="section">
-				<h1>API Tester</h1>
-			    <p>You can use this app to test Brightcove APIs. Before using this app, you should read the <a href="//docs.brightcove.com/en/video-cloud/oauth-api/guides/oauth-api-overview.html">Brightcove OAuth Overview</a> so that you understand how the authentication works.</p>
-			</div>
-			<div class="section" id="requirements">
-				<h2>Requirements</h2>
-				<p>To use this app, you will need:</p>
-					<ul>
-						<li>a Video Cloud or Perform account that you can login to</li>
-					</ul>
-					<p class="BCL-aside">Note: you must be an administrator for the account to get client credentials. If you are not an administrator, talk to your account administrator about that.</p>
-			</div>
-			<div class="section" id="getBCToken">
-			    <h2>Getting your BC_TOKEN</h2>
-			    <p>To use this app, you need to get your <code>BC_TOKEN</code>:</p>
-				<ol>
-					<li>Login to your Video Cloud or Perform account</li>
-					<li>If you have multiple accounts, make sure you are in the one that you want to make API calls for</li>
-					<li>
-						Copy the following JavaScript, paste it into your developer console, and press <strong>Return</strong>:
-<pre><code>var cookiesArray = document.cookie.split(";"), cookiesObj = {}, i, tmpArray = [];
-for (i = 0; i < cookiesArray.length; i++) {
-    tmpArray = cookiesArray[i].split("=");
-    cookiesObj[tmpArray[0].replace(/\s/g, "")] = tmpArray[1];
-}
-window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
-					</li>
-					<li>You should see a prompt pop up that contains your BC_TOKEN - copy and paste it into the BC_TOKEN field below</li>
-				</ol>
-			</div>
-			<div id="infoForm" class="section">
-				<h2>Info for the API Request</h2>
-			        <fieldset>
-			            <legend>Inputs</legend>
-		                <p>
-							Account ID:
-							<input name="account_id" id="account_id" type="text" value="">
-						</p>
-		                <p>
-							Client ID:
-							<input name="client_id" id="client_id" type="text" value="">
-						</p>
-		                <p>
-							Client Secret:
-							<input name="client_secret" id="client_secret" type="text" value="">
-						</p>
-			        </fieldset>
-			        <fieldset>
-			        	<legend>Outputs</legend>
-						<p>
-							API request:
-							<textarea id="apiRequest"></textarea>
-						</p>
-		                <p>
-							Access Token:
-							<input name="access_token" id="access_token" type="text" value="">
-						</p>
-		                <p>
-		                    <input id="submit" type="submit" value="Submit Request">
-		                </p>
-			            <pre><code id="response"></code></pre>
-			        </fieldset>
-			</div>
-		</div>
-	</div>
-	<!-- bcl scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gist-embed/1.7/gist-embed.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.2/fastclick.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/js/foundation.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"></script>
-	<script src="//docs.brightcove.com/en/scripts/docs-nav-data.min.js"></script>
-	<script src="//docs.brightcove.com/en/scripts/bcls-doc-site.js"></script>
-	<script>
-		$(document).foundation();
-	</script>
-
+	<h1>API Tester</h1>
+    <fieldset>
+        <legend>Inputs</legend>
+        <p>
+			Account ID:
+			<input size="60" id="account_id" type="text" value="">
+		</p>
+        <p>
+			Client ID:
+			<input size="60" id="client_id" type="text" value="">
+		</p>
+        <p>
+			Client Secret:
+			<input size="120" id="client_secret" type="text" value="">
+		</p>
+    </fieldset>
+    <fieldset>
+    	<legend>Outputs</legend>
+		<p>
+			API request:
+			<textarea id="apiRequest"></textarea>
+		</p>
+        <p>
+            <input id="submit" type="submit" value="Submit Request">
+        </p>
+        <pre><code id="response"></code></pre>
+    </fieldset>
 	<script>
 	var BCLS = ( function (window, document) {
 		var account_id_field = document.getElementById("account_id"),
@@ -154,22 +84,19 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
 			str = str.replace(/\s/g, "");
 			return str;
 		};
-		// function to get access token
-		getAccessToken = function () {
-			var httpRequest = new XMLHttpRequest(),
-				access_tokenURL = "https://oauth.brightcove.com/v3/access_token?grant_type=client_credentials",
-				now = new Date().valueOf(),
+		// function to make API request
+		submitRequest = function () {
+		    var httpRequest = new XMLHttpRequest(),
+				proxyURL = "http://solutions.brightcove.com:8005/",
+				requestData,
 				getResponse = function () {
 					try {
 					    if (httpRequest.readyState === 4) {
 					      if (httpRequest.status === 200) {
-					        console.log("response", httpRequest.responseText);
-					        var data = JSON.parse(httpRequest.responseText);
-					        access_token = data.access_token;
-					        expires_in = now + data.expires_in * 1000;
-					        access_token_field.innerHTML = "New token: " + access_token + " Expires in " + data.expires_in + " seconds";
+					        response.innerHTML = httpRequest.responseText;
+					        var data = httpRequest.responseText;
 					      } else {
-					        alert('There was a problem with the request.');
+					        alert("There was a problem with the request. Request returned " + httpRequest.status);
 					      }
 					    }
 					  }
@@ -177,52 +104,32 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
 					    alert('Caught Exception: ' + e.description);
 					  }
 				};
-			// base64 encode auth string
-			auth_string = btoa(client_id + ":" + client_secret);
-			// open the request
-			httpRequest.open("POST", access_tokenURL);
-			// set headers
-			httpRequest.setRequestHeader("Content-Type", "application/json");
-			httpRequest.setRequestHeader("Authorization", ("Basic " + auth_string))
-			// open and send request
-			httpRequest.send();
-		};
-		// function to make API request
-		submitRequest = function (options) {
-		    var httpRequest = new XMLHttpRequest(),
-		    	alertContents,
-				now = new Date().valueOf();
-            // check to make sure AJAX supported
-            if (!httpRequest) {
-				alert("You must have an old browser: (Cannot create an XMLHTTP instance");
+			if (account_id === null || client_id === null || client_secret === null) {
+				alert("You must provide an account id, client id, and client secret");
 				return false;
-		    }
-		    // check for inputs
-		    if (account_id === null || client_id === null || client_secret === null) {
-		    	alert("You must enter an account id, client id, and client secret");
-		    	return false;
-		    }
-		    // check to see if we have a valid access token
-		    if (access_token === null || expires_in < now ) {
-		    	getAccessToken();
-		    }
-			// alertContents = function () {
-			// 	if (httpRequest.readyState === 4) {
-			// 		if (httpRequest.status === 200) {
-			// 		var response = JSON.parse(httpRequest.responseText);
-			// 		alert(response.computedString);
-			// 		} else {
-			// 		alert('There was a problem with the request.');
-			// 		}
-			// 	}
-			// }
+			}
+			// get latest request URL in case use edited it
+			apiRequest = cleanString(apiRequest_field.value);
+			// set up request data
+			requestData = "client_id=" + client_id + "&client_secret=" + client_secret + "&url=" + encodeURIComponent(apiRequest);
+			// set response handler
+			httpRequest.onreadystatechange = getResponse;
+			// open the request
+			httpRequest.open("POST", proxyURL);
+			// set headers
+			httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			// open and send request
+			httpRequest.send(requestData);
 		};
 		// init function to set up event listeners
 		init = function () {
+			// event listeners
 			submit_button.addEventListener("click", submitRequest);
 			account_id_field.addEventListener("change", function () {
+				// trim any leading/trailing spaces from the input strings
 				account_id = cleanString(account_id_field.value);
 				apiRequest = "https://cms.api.brightcove.com/v1beta1/accounts/" + account_id + "/videos";
+				// display the request URL
 				apiRequest_field.innerHTML = apiRequest;
 			});
 			client_id_field.addEventListener("change", function () {
@@ -237,7 +144,6 @@ window.prompt("BC_TOKEN:", cookiesObj.BC_TOKEN);</code></pre>
 
 	})(window, document);
 	</script>
-	<div class="footer text-center"><a href="mailto:docs@brightcove.com">Questions or comments?</a></div>
 </body>
 
 </html>
